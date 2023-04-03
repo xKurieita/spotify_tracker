@@ -4,9 +4,7 @@ import Image from 'next/image';
 
 interface LoginProps {
     providers: {
-        [provider: string]: {
-
-        
+        [provider: string]: {   
         id: string;
         name: string;
         type: string;
