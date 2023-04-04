@@ -1,9 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
-import Image from 'next/image';
-import UserInfo from '@/components/UserInfo';
 import Sidebar from '@/components/Sidebar';
+import Center from '@/components/Center';
 
 const AUTH_URL: string = 'https://api.spotify.com/v1'
 
@@ -16,9 +14,9 @@ export default function Home() {
 
   return (
     <div className='bg-black h-screen overflow-hidden'>
-      <main className=''>
+      <main className='flex'>
         <Sidebar />
-          
+        <Center /> 
       </main>
       <div>
         {/* player */}
