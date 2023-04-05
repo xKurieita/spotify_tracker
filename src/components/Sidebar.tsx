@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     HomeIcon,
     SearchIcon,
@@ -9,11 +9,26 @@ import {
 
 } from '@heroicons/react/outline'
 import { signOut, useSession } from 'next-auth/react'
+import useSpotify from '@/hooks/useSpotify';
+import { useRecoilState } from 'recoil';
+import { playlistIdState } from '@/atoms/playlistAtom';
 
 const Sidebar: React.FC = () => {
+    const spotifyApi = useSpotify();
     const { data: session, status } = useSession();
-    console.log(session)
+    const [playlists, setPlaylists] = React.useState<any[]>([]);
+    const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+    
 
+    useEffect(() => {
+        if (spotifyApi.getAccessToken()) {
+            spotifyApi.getUserPlaylists().then((res) => {
+                setPlaylists(res.body.items)
+            })
+        }
+    }, [session, spotifyApi]);
+
+    console.log(playlistId)
 
   return (
     <div className='text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll h-screen scrollbar-hide'>
@@ -51,7 +66,12 @@ const Sidebar: React.FC = () => {
                 <hr className='border-t-[0.1px] border-gray-900'/>
 
                 {/*playlists  */}
-                <p className='cursor-pointer hover:text-white'>Playlist name....</p>
+                {playlists?.map((playlist) => (
+                    <div key={playlist.id} onClick={() => setPlaylistId(playlist.id)} className='cursor-pointer hover:text-white'>
+                        {playlist.name}
+                    </div>
+                ))}
+
         </div>
     </div>
   )

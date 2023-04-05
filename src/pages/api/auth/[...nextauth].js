@@ -44,8 +44,8 @@ export default NextAuth({
             if (account && user) {
                 return {
                     ...token,
-                    accessToken: account.accessToken,
-                    refreshToken: account.refreshToken,
+                    access_token: account.access_token,
+                    refresh_token: account.refresh_token,
                     username: account.providerAccountId,
                     accessTokenExpires: account.expires_at * 1000,
                 };
@@ -69,9 +69,11 @@ export default NextAuth({
                     error: token.error,
                 }
             }
-            session.user.accessToken = token.accessToken;
-            session.user.refreshToken = token.refreshToken;
+            session.error = null;
+            session.user.accessToken = token.access_token;
+            session.user.refreshToken = token.refresh_token;
             session.user.username = token.username;
+
             return session;
         }
     },

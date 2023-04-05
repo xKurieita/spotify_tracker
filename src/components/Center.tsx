@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { ChevronDownIcon } from '@heroicons/react/outline'
+import { playlistIdState, playlistState } from '@/atoms/playlistAtom'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import useSpotify from '@/hooks/useSpotify'
 
 const colors: string[] = [
     'from-indigo-500',
@@ -17,11 +20,24 @@ const colors: string[] = [
 
 const Center = () => {
     const {data: session } = useSession();
+    const spotifyApi = useSpotify();
     const [color, setColor] = useState<string>('')
+    const playlistId = useRecoilValue(playlistIdState)
+    const [playlist, setPlaylist] = useRecoilState(playlistState)
 
     useEffect(() => {
         setColor(colors[Math.floor(Math.random() * colors.length)])
-    }, []);
+    }, [playlistId]);
+
+    useEffect(() => {
+        spotifyApi.getPlaylist(playlistId).then((res) => {
+            console.log(res.body)
+            setPlaylist(res.body)
+        }).catch((err) => {
+            console.log(err)
+        }
+        ) 
+    }, [spotifyApi, setPlaylist, playlistId]);
 
   return (
     <div className='flex-grow text-white'>
@@ -36,7 +52,6 @@ const Center = () => {
             </div>
         </header>
         <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 text-white padding-8`}>
-                    <h1>Hello</h1>
 
         </section>
     </div>
