@@ -51,7 +51,7 @@ const Player = () => {
             setVolume(50);
         } 
 
-    }, [currentTrackId, spotifyApi, session]);
+    }, [currentTrackId, spotifyApi, session, fetchCurrentTrack]);
 
     const debouncedAdjustVolume = useCallback(
         debounce((volume: number) => {
