@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { currentTrackIdState, isPlayingState } from '@/atoms/songAtom';
 import useSongInfo from '@/hooks/useSongInfo';
 import useSpotify from '@/hooks/useSpotify';;
@@ -51,7 +52,7 @@ const Player = () => {
             setVolume(50);
         } 
 
-    }, [currentTrackId, spotifyApi, session, fetchCurrentTrack]);
+    }, [currentTrackId, spotifyApi, session]);
 
     const debouncedAdjustVolume = useCallback(
         debounce((volume: number) => {
@@ -60,6 +61,15 @@ const Player = () => {
             )
     }, 500)
     , [spotifyApi])
+
+    const debouncedAdjustVolume = useCallback(
+        debounce((volume: number) => {
+            spotifyApi.setVolume(volume).catch((err: any) => {
+                // Handle error
+                throw Error(err);
+            });
+        }, 500)
+    , [spotifyApi]);
 
     useEffect(() => {
         if (volume > 0 && volume < 100) {
