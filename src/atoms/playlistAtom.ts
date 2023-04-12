@@ -1,3 +1,4 @@
+import { PlaylistType } from "@/types";
 import { atom } from "recoil";
 
 export const playlistIdState = atom({
